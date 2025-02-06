@@ -10,12 +10,5 @@ public class LoginResponseDto {
     public String refreshToken;
     @JsonProperty("expiration_date")
     public Date expirationDate;
-    @JsonProperty("avatar_url")
-    public String avatarUrl;
 
-    public String language;
-
-    public LoginResponseDto() {
-
-    }
 }

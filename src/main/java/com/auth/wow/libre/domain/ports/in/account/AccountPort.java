@@ -7,6 +7,8 @@ public interface AccountPort {
     Long create(String username, String password, String email, Long userId,
                 String expansion, byte[] salt, String transactionId);
 
+    Long countOnline(String transactionId);
+
     Boolean isOnline(Long accountId, String transactionId);
 
     AccountDetailDto account(Long accountId, String transactionId);
@@ -17,12 +19,11 @@ public interface AccountPort {
 
     Long count(String transactionId);
 
-    Long online(String transactionId);
 
     Long countUserId(String transactionId);
 
     MetricsProjection metrics(String transactionId);
 
-    void  updateMail(String username, String updateMail, String transactionId);
+    void updateMail(String username, String updateMail, String transactionId);
 
 }

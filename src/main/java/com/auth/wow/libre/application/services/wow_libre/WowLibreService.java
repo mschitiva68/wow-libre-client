@@ -32,9 +32,9 @@ public class WowLibreService implements WowLibrePort {
         Optional<ClientEntity> clientJwt = obtainClient.getClientStatusIsTrue();
 
         if (clientJwt.isEmpty()) {
-            LOGGER.error("[WowLibreService][apiSecret]  The system has not been configured correctly to register " +
-                    "users. {}", transactionId);
-            throw new UnauthorizedException("The system has not been configured correctly to register users.",
+            LOGGER.error("[WowLibreService][getJwt] The system has not been configured correctly to use the " +
+                    "registration system with Wow Libre {}", transactionId);
+            throw new InternalException("The system has not been configured correctly to register users.",
                     transactionId);
         }
 
@@ -47,10 +47,8 @@ public class WowLibreService implements WowLibrePort {
         LoginResponseDto jwtDto = login(transactionId);
 
         if (jwtDto == null) {
-            LOGGER.error("[WowLibreService] [apiSecret]  The system could not do a successful authentication with " +
-                    "free" +
-                    " wow so it was not possible to" +
-                    " carry out the transaction. {}", transactionId);
+            LOGGER.error("[WowLibreService] [getJwt]  The system could not do a successful authentication with " +
+                    "free wow so it was not possible to carry out the transaction. {}", transactionId);
             throw new InternalException("It was not possible to authenticate with the free wow central, please " +
                     "contact support", transactionId);
         }
@@ -81,10 +79,10 @@ public class WowLibreService implements WowLibrePort {
     }
 
     @Override
-    public ServerModel apiSecret(String jwt, String transactionId) {
-        ServerDto serverDto = wowLibreClient.secret(jwt, transactionId);
+    public ServerModel getApiSecret(String jwt, String transactionId) {
+        ServerDto serverDto = wowLibreClient.getApiSecret(jwt, transactionId);
 
-        if (serverDto == null) {
+        if (serverDto == null || serverDto.getApiSecret() == null) {
             LOGGER.error("[WowLibreService][apiSecret] An error occurred when obtaining the secret api with the free " +
                     "wow central " +
                     "base {}", transactionId);

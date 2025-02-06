@@ -63,7 +63,7 @@ public class WowLibreClient {
 
     }
 
-    public ServerDto secret(String jwt, String transactionId) {
+    public ServerDto getApiSecret(String jwt, String transactionId) {
         HttpHeaders headers = new HttpHeaders();
 
         headers.set(HEADER_TRANSACTION_ID, transactionId);
@@ -82,13 +82,13 @@ public class WowLibreClient {
             }
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
-            LOGGER.error("[WowLibreClient] [api-secret] Client/Server Error: {}. The request failed with a client or " +
+            LOGGER.error("[WowLibreClient] [getApiSecret] Client/Server Error: {}. The request failed with a client or " +
                             "server error. " +
                             "HTTP Status: {}, Response Body: {}",
                     e.getMessage(), e.getStatusCode(), e.getResponseBodyAsString());
             throw new InternalException("Transaction failed due to client or server error", transactionId);
         } catch (Exception e) {
-            LOGGER.error("[WowLibreClient] [api-secret] Unexpected Error: {}. An unexpected error occurred during the" +
+            LOGGER.error("[WowLibreClient] [getApiSecret] Unexpected Error: {}. An unexpected error occurred during the" +
                             " transaction with ID: {}.",
                     e.getMessage(), transactionId, e);
             throw new InternalException("Unexpected transaction failure", transactionId);

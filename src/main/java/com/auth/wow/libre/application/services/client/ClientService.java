@@ -44,8 +44,8 @@ public class ClientService implements ClientPort {
 
         try {
             final String jwt = wowLibrePort.login(transactionId).jwt;
-            final ServerModel apiSecret = wowLibrePort.apiSecret(jwt, transactionId);
-            SecretKey derivedKey = KeyDerivationUtil.deriveKeyFromPassword(apiSecret.keyPassword, salt);
+            final ServerModel apiSecret = wowLibrePort.getApiSecret(jwt, transactionId);
+            SecretKey derivedKey = KeyDerivationUtil.deriveKeyFromPassword(apiSecret.keyPassword(), salt);
             final String decryptPassword = EncryptionUtil.decrypt(password, derivedKey);
             final String passwordEncode = passwordEncoder.encode(decryptPassword);
 

@@ -42,13 +42,13 @@ public class AccountService implements AccountPort {
                        String transactionId) {
 
         final String jwt = wowLibrePort.getJwt(transactionId);
-        final ServerModel apiSecret = wowLibrePort.apiSecret(jwt, transactionId);
+        final ServerModel apiSecret = wowLibrePort.getApiSecret(jwt, transactionId);
 
         try {
-            SecretKey derivedKey = KeyDerivationUtil.deriveKeyFromPassword(apiSecret.keyPassword, saltPassword);
+            final SecretKey derivedKey = KeyDerivationUtil.deriveKeyFromPassword(apiSecret.keyPassword(), saltPassword);
             final String decryptedPassword = EncryptionUtil.decrypt(password, derivedKey);
 
-            boolean usernameExist = obtainAccountPort.findByUsername(username).isPresent();
+            final boolean usernameExist = obtainAccountPort.findByUsername(username).isPresent();
 
             if (usernameExist) {
                 LOGGER.error("The username is not available {}", transactionId);
@@ -72,21 +72,23 @@ public class AccountService implements AccountPort {
             account.setExpansion(expansion);
             account.setUserId(userId);
             return saveAccountPort.save(account).getId();
-        } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("The server where your character is " + "currently located is not available {}",
-                    transactionId);
-            throw new InternalException(
-                    "The account could not be created, something has failed in the encryption  {}",
-                    transactionId);
         } catch (InternalException e) {
             throw new InternalException(e.getMessage(), transactionId);
         } catch (Exception e) {
-            LOGGER.error("An error occurred during processing: {} {}", e.getMessage(), transactionId, e);
+            LOGGER.error("[AccountService] [create] It was not possible to create the account on the server, there " +
+                            "was a failure with the " +
+                            "encryption. {} {}",
+                    transactionId, e.getMessage());
             throw new InternalException(
                     "It was not possible to create the client, please try later and contact support", transactionId);
         }
 
 
+    }
+
+    @Override
+    public Long countOnline(String transactionId) {
+        return obtainAccountPort.countOnline(transactionId);
     }
 
     @Override
@@ -123,10 +125,10 @@ public class AccountService implements AccountPort {
         }
 
         final String jwt = wowLibrePort.getJwt(transactionId);
-        final ServerModel apiSecret = wowLibrePort.apiSecret(jwt, transactionId);
+        final ServerModel apiSecret = wowLibrePort.getApiSecret(jwt, transactionId);
 
         try {
-            SecretKey derivedKey = KeyDerivationUtil.deriveKeyFromPassword(apiSecret.keyPassword, saltPassword);
+            SecretKey derivedKey = KeyDerivationUtil.deriveKeyFromPassword(apiSecret.keyPassword(), saltPassword);
             final String decryptedPassword = EncryptionUtil.decrypt(password, derivedKey);
             SecureRandom random = new SecureRandom();
             byte[] salt = new byte[32];
@@ -159,6 +161,7 @@ public class AccountService implements AccountPort {
 
     }
 
+
     @Override
     public AccountsDto accounts(int size, int page, String filter, String transactionId) {
         return new AccountsDto(obtainAccountPort.findByAll(size, page, filter).stream().map(account ->
@@ -175,10 +178,6 @@ public class AccountService implements AccountPort {
         return obtainAccountPort.count();
     }
 
-    @Override
-    public Long online(String transactionId) {
-        return obtainAccountPort.countOnline(transactionId);
-    }
 
     @Override
     public Long countUserId(String transactionId) {

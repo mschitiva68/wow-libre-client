@@ -66,7 +66,7 @@ public class CharacterSocialService implements CharacterSocialPort {
                     characterSocials.stream().map(characterSocial ->
                             Optional.of(charactersPort.getCharacter(characterSocial.friend, transactionId))
                                     .map(character -> new CharacterSocialDetail(character, characterSocial))
-                                    .orElse(null)).collect(Collectors.toList());
+                                    .orElse(null)).toList();
             characterSocialDto.setFriends(friends);
             characterSocialDto.setTotalQuantity(friends.size());
         }
