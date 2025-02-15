@@ -1,14 +1,10 @@
 package com.auth.wow.libre.domain.model.security;
 
-import com.auth.wow.libre.domain.model.RolModel;
-import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.*;
+import org.springframework.security.core.*;
+import org.springframework.security.core.userdetails.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -41,23 +37,6 @@ public class CustomUserDetails implements UserDetails {
         this.language = language;
     }
 
-    public CustomUserDetails(List<RolModel> authorities, String password, String username,
-                             boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
-                             boolean enabled, Long userId, String avatarUrl, String language) {
-
-        this.authorities = authorities.stream()
-                .map(rolModel -> new SimpleGrantedAuthority(rolModel.name))
-                .collect(Collectors.toList());
-        this.password = password;
-        this.username = username;
-        this.accountNonExpired = accountNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.enabled = enabled;
-        this.userId = userId;
-        this.avatarUrl = avatarUrl;
-        this.language = language;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

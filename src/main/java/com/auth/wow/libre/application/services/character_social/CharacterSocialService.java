@@ -20,12 +20,12 @@ import org.springframework.stereotype.*;
 
 import java.time.*;
 import java.util.*;
-import java.util.stream.*;
 
 @Service
 public class CharacterSocialService implements CharacterSocialPort {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(CharacterSocialService.class);
+    public static final String ERROR_IT_WAS_NOT_POSSIBLE_TO_OBTAIN_THE_REQUESTED_CHARACTER = "It was not possible to obtain the requested character";
 
     private final CharactersPort charactersPort;
     private final ObtainCharacterSocial obtainCharacterSocial;
@@ -81,7 +81,7 @@ public class CharacterSocialService implements CharacterSocialPort {
         verifierAccount(accountId, userId, transactionId);
 
         if (charactersPort.getCharacter(characterId, accountId, transactionId) == null) {
-            throw new InternalException("It was not possible to obtain the requested character", transactionId);
+            throw new InternalException(ERROR_IT_WAS_NOT_POSSIBLE_TO_OBTAIN_THE_REQUESTED_CHARACTER, transactionId);
         }
 
         obtainCharacterSocial.getFriends(characterId, transactionId)

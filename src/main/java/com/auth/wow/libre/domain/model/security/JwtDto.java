@@ -1,26 +1,18 @@
 package com.auth.wow.libre.domain.model.security;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.*;
 
 import java.util.*;
 
+@AllArgsConstructor
 public class JwtDto {
-
-    public String jwt;
+    public final String jwt;
     @JsonProperty("refresh_token")
-    public String refreshToken;
+    public final String refreshToken;
     @JsonProperty("expiration_date")
-    public Date expirationDate;
+    public final Date expirationDate;
     @JsonProperty("avatar_url")
-    public String avatarUrl;
-
-    public String language;
-
-    public JwtDto(String jwt, String refreshToken, Date expirationDate, String avatarUrl, String language) {
-        this.jwt = jwt;
-        this.refreshToken = refreshToken;
-        this.expirationDate = expirationDate;
-        this.avatarUrl = avatarUrl;
-        this.language = language;
-    }
+    public final String avatarUrl;
+    public final String language;
 }
