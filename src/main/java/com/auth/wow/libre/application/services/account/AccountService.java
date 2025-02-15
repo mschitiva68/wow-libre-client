@@ -145,17 +145,10 @@ public class AccountService implements AccountPort {
             accountUpdate.setVerifier(verifier);
 
             saveAccountPort.save(accountUpdate);
-        } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("[AccountService][changePassword] The account could not be created, something has " +
-                    "failed in the encryption {}", transactionId);
-            throw new InternalException(
-                    transactionId, "[AccountService][changePassword] The account could not be created, something has " +
-                    "failed in the encryption");
         } catch (Exception e) {
             LOGGER.error("[AccountService][changePassword] Could not update password: {} {}", e.getMessage(),
                     transactionId, e);
-            throw new InternalException(
-                    transactionId, "Could not update password");
+            throw new InternalException("Could not update password", transactionId);
         }
 
 
@@ -176,12 +169,6 @@ public class AccountService implements AccountPort {
     @Override
     public Long count(String transactionId) {
         return obtainAccountPort.count();
-    }
-
-
-    @Override
-    public Long countUserId(String transactionId) {
-        return null;
     }
 
     @Override

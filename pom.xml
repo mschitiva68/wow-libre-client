@@ -135,26 +135,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.6.1</version>
-                <executions>
-                    <execution>
-                        <id>proguard</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>proguard</goal>
-                        </goals>
-                        <configuration>
-                            <injar>${project.build.finalName}.jar</injar>
-                            <outjar>${project.build.finalName}.jar</outjar>
-                            <obfuscate>true</obfuscate>
-                            <proguardInclude>proguard.conf</proguardInclude>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
 
 
         </plugins>

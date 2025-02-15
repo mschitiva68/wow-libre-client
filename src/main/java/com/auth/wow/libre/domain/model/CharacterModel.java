@@ -81,7 +81,7 @@ public class CharacterModel {
     public final String knownTitles;
     public final Integer actionsBars;
     public final Integer grantableLevels;
-    public Long gold;
-    public Long silver;
-    public Long copper;
+    public final Long gold;
+    public final Long silver;
+    public final Long copper;
 }

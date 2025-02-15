@@ -19,9 +19,6 @@ public interface AccountPort {
 
     Long count(String transactionId);
 
-
-    Long countUserId(String transactionId);
-
     MetricsProjection metrics(String transactionId);
 
     void updateMail(String username, String updateMail, String transactionId);

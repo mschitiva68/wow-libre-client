@@ -1,20 +1,25 @@
 package com.auth.wow.libre.infrastructure.client.soap.xml;
 
+import org.slf4j.*;
 import org.springframework.ws.client.support.interceptor.*;
 import org.springframework.ws.context.*;
 
 import java.io.*;
+import java.nio.charset.*;
 
 public class CustomLoggingInterceptor implements ClientInterceptor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomLoggingInterceptor.class);
+
     @Override
     public boolean handleRequest(MessageContext messageContext) {
         // Log de la solicitud SOAP
-        System.out.println("Request XML:");
+        LOGGER.info("Request XML:");
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             messageContext.getRequest().writeTo(os);
-            System.out.println(new String(os.toByteArray()));
+            LOGGER.info(os.toString(StandardCharsets.UTF_8));
         } catch (IOException e) {
+            LOGGER.error("Error writing request: " + e.getMessage());
             throw new RuntimeException(e);
         }
         System.out.println(); // Salto de línea para claridad
@@ -23,15 +28,15 @@ public class CustomLoggingInterceptor implements ClientInterceptor {
 
     @Override
     public boolean handleResponse(MessageContext messageContext) {
-        // Log de la respuesta SOAP
-        System.out.println("Response XML:");
+        LOGGER.info("Response XML:");
         try {
-            messageContext.getResponse().writeTo(System.out);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            messageContext.getResponse().writeTo(outputStream);
+            LOGGER.info(outputStream.toString(StandardCharsets.UTF_8));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error writing response: " + e.getMessage());
         }
-        System.out.println(); // Salto de línea para claridad
-        return true; // Continuar con la ejecución normal
+        return true;
     }
 
     @Override
