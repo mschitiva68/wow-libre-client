@@ -11,6 +11,7 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.dao.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.config.http.*;
 import org.springframework.security.crypto.bcrypt.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.web.*;
@@ -20,7 +21,6 @@ import org.springframework.web.cors.*;
 import java.util.*;
 
 import static com.auth.wow.libre.domain.model.constant.Constants.*;
-import static org.springframework.security.config.http.SessionCreationPolicy.*;
 
 @EnableWebSecurity
 @Configuration
@@ -71,20 +71,30 @@ public class SecurityConfiguration {
                 ).addFilterBefore(new AuthenticationFilter(authenticationProvider(), jwtPort),
                         UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(request ->
-                        request.requestMatchers(
-                                        //INTERNAL API
-                                        "/api/client",
-                                        "/api/account/create",
-                                        //SWAGGER
-                                        "/v2/api-docs", "/swagger-resources",
-                                        "/swagger-resources/**", "/configuration/ui",
-                                        "/configuration/security", "/swagger-ui.html", "/webjars/**",
-                                        "/v3/api-docs/**", "/swagger-ui/**")
-                                .permitAll().anyRequest().authenticated())
-                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-                .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(
+                                // INTERNAL API (siguen sin autenticación)
+                                "/api/client",
+                                "/api/account/create",
+
+                                // SWAGGER (siguen sin autenticación)
+                                "/v2/api-docs", "/swagger-resources",
+                                "/swagger-resources/**", "/configuration/ui",
+                                "/configuration/security", "/swagger-ui.html", "/webjars/**",
+                                "/v3/api-docs/**", "/swagger-ui/**",
+
+                                // PERMITIR THYMELEAF (agregado)
+                                "/", "/home",  "/error","/register","/congrats",
+
+                                // PERMITIR ARCHIVOS ESTÁTICOS (CSS, JS, IMAGES)
+                                "/css/**", "/js/**", "/images/**", "/webjars/**","/favicon.ico"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

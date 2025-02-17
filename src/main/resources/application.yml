@@ -4,7 +4,7 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
   main:
-    allow-circular-references: true
+    allow-circular-references: false
   jpa:
     hibernate:
       ddl-auto: none
@@ -53,7 +53,11 @@ application:
 events:
   twinks:
      enable: false
-
+google:
+  api-secret: "6Ld2INkqAAAAAByGt40YkWgDIpkJQ1NE2oDVyyqb"
+  api-key: "6Ld2INkqAAAAAD3-ikPyI-yzYgMoL6mvcQkAJak-"
+server-web:
+  name: "Wow Private Server"
 ---
 spring:
   config:
@@ -92,10 +96,15 @@ application:
     wow-libre-server: https://api.wowlibre.com/core/api/server/key
   security:
     jwt:
-      secret-key: D7A4C3F9E5D2A688B9D1F7C2E9D7A9F3C0E0F6B6F2D8A7D1E9F6D5A8B1F5D6E
+      secret-key: ${SECRET_JWT}
       expiration: 604800000  # 7 day
       refresh-token:
         expiration: 1209600000 # 14 días
 events:
   twinks:
     enable: ${EVENTS_TWINKS_ENABLE}
+google:
+  api-secret:  ${GOOGLE_API_SECRET}
+  api-key: ${GOOGLE_API_KEY}
+server-web:
+  name: ${SERVER_WEB_NAME}

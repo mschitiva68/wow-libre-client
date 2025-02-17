@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy to Clipboard Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-100">
+
+<!-- Navbar -->
+<nav class="bg-gray-800 shadow-md py-4">
+    <div class="container mx-auto px-6 flex justify-between items-center">
+        <a class="text-3xl font-semibold text-yellow-400 hover:text-yellow-600 transition duration-300" href="/" th:text="${serverName}"></a>
+        <div>
+            <a class="text-gray-200 px-4 py-2 hover:text-yellow-400" href="/">Home</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="bg-cover bg-center py-40" style="background-image: url('https://bnetcmsus-a.akamaihd.net/cms/blog_header/wa/WAA4GIXAJY7Y1723817737372.png');">
+    <div class="container mx-auto px-6 text-center">
+        <h1 class="text-5xl md:text-6xl font-extrabold text-white mb-8">
+            ¡Bienvenido al Servidor Privado de WoW!
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-300 mb-10 max-w-2xl mx-auto">
+            Gracias por registrarte en nuestro servidor privado de World of Warcraft. ¡Ahora puedes empezar tu aventura en Azeroth y vivir grandes momentos con nosotros!
+        </p>
+
+        <!-- Button to copy text -->
+        <div class="mt-6">
+            <button id="copyButton" class="bg-yellow-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-yellow-700 transition-custom">
+                Copy Realmlist
+            </button>
+        </div>
+
+        <!-- Hidden Input Field for Copying -->
+        <!-- Aquí Thymeleaf inserta el valor desde el backend -->
+        <input type="text" id="copyText" th:value="${textToCopy}" class="hidden">
+    </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-300 py-8">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center">
+            <!-- Social Media Links -->
+            <div class="flex space-x-6">
+                <a class="text-gray-400 hover:text-yellow-400 transition-colors" href="#">
+                    <i class="fab fa-facebook-f text-2xl"></i>
+                </a>
+                <a class="text-gray-400 hover:text-yellow-400 transition-colors" href="#">
+                    <i class="fab fa-twitter text-2xl"></i>
+                </a>
+                <a class="text-gray-400 hover:text-yellow-400 transition-colors" href="#">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+                <a class="text-gray-400 hover:text-yellow-400 transition-colors" href="#">
+                    <i class="fab fa-discord text-2xl"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer Links or Copyright -->
+        <div class="mt-6 text-center text-sm text-gray-400">
+            <p>&copy; 2024 WoW Private Server. All rights reserved.</p>
+            <p class="mt-2">Crafted with ❤️ by the WoW Libre</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Obtener el botón y el campo de texto oculto
+    const copyButton = document.getElementById('copyButton');
+    const copyText = document.getElementById('copyText');
+
+    // Agregar un evento de clic al botón
+    copyButton.addEventListener('click', function() {
+        // Seleccionar el texto del input
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // Para dispositivos móviles
+
+        // Usar la API moderna de portapapeles
+        navigator.clipboard.writeText(copyText.value).then(function() {
+            // Cambiar el texto del botón a "Copiado"
+            copyButton.textContent = 'Copiado!';
+
+            // Opcional: cambiar el texto del botón de vuelta a "Copiar" después de 2 segundos
+            setTimeout(function() {
+                copyButton.textContent = 'Copy Realmlist';
+            }, 2000);
+        }).catch(function(error) {
+            console.error('Error al copiar al portapapeles:', error);
+        });
+    });
+</script>
+
+</body>
+</html>

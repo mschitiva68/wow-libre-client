@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
+    <title th:text="${serverName} + ' - Home'">Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Swiper.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var swiper = new Swiper(".mySwiper", {
+                loop: true,
+                autoplay: {
+                    delay: 5000, // Cambia de imagen cada 5 segundos
+                    disableOnInteraction: false,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+            });
+        });
+    </script>
+    <style>
+        /* Ocultar la barra de desplazamiento */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+<!-- Navbar -->
+<nav class="bg-gray-800">
+    <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+        <a class="text-yellow-400 text-2xl md:text-3xl font-bold" href="/" th:text="${serverName}"></a>
+        <div class="mt-2 md:mt-0">
+            <a class="text-gray-200 px-4 py-2 hover:text-yellow-400" href="/register">Create an Account</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative w-full">
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <!-- Slide 1 -->
+            <div class="swiper-slide bg-cover bg-center h-[120vh] min-h-[900px] flex justify-center items-center text-center"
+                 style="background-image: url('https://bnetcmsus-a.akamaihd.net/cms/blog_header/wa/WAA4GIXAJY7Y1723817737372.png'); background-size: cover;">
+                <div class="p-10 rounded-lg w-full max-w-3xl mx-auto flex flex-col items-center text-center space-y-6">
+                    <h1 class="text-4xl md:text-6xl font-bold text-yellow-400">Welcome to Azeroth</h1>
+                    <p class="text-lg md:text-2xl text-gray-300">Adventure, battle, and explore the realms of Azeroth.</p>
+                    <a href="/register" class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg shadow-lg hover:bg-yellow-500">
+                        Create an Account
+                    </a>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="swiper-slide bg-cover bg-center h-[120vh] min-h-[900px] flex justify-center items-center text-center"
+                 style="background-image: url('https://static.wixstatic.com/media/5dd8a0_b6b426b496e649c9a619669c53349b98~mv2.jpg'); background-size: cover;">
+                <div class="p-10 rounded-lg w-full max-w-3xl mx-auto flex flex-col items-center text-center space-y-6">
+                    <h1 class="text-4xl md:text-6xl font-bold text-yellow-400">Epic Raids Await</h1>
+                    <p class="text-lg md:text-2xl text-gray-300">Gather your allies and conquer legendary dungeons.</p>
+                    <a href="/register" class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg shadow-lg hover:bg-yellow-500">
+                        Join Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="swiper-slide bg-cover bg-center h-[120vh] min-h-[900px] flex justify-center items-center text-center"
+                 style="background-image: url('https://wow.zamimg.com/uploads/screenshots/normal/1037722.jpg'); background-size: cover;">
+                <div class="p-10 rounded-lg w-full max-w-3xl mx-auto flex flex-col items-center text-center space-y-6">
+                    <h1 class="text-4xl md:text-6xl font-bold text-yellow-400">Battle in the Arena</h1>
+                    <p class="text-lg md:text-2xl text-gray-300">Prove your skills in PvP combat against the best.</p>
+                    <a href="/register" class="bg-yellow-400 text-gray-900 px-8 py-4 rounded-lg shadow-lg hover:bg-yellow-500">
+                        Start Fighting
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Arrows -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="bg-gray-900 py-16 px-4">
+    <div class="container mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-yellow-400 mb-6">About Our Server</h2>
+        <p class="text-lg text-gray-300 mb-10">
+            Our private server offers a nostalgic experience of World of Warcraft. Relive epic battles, raid dungeons with friends, and explore a fully customized world.
+        </p>
+
+        <!-- Cards Section -->
+        <div class="bg-gray-900 p-6 rounded-lg shadow-md mx-auto max-w-xl">
+            <h3 class="text-2xl font-bold text-yellow-400 text-center mb-4">Server Stats</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Card 1 -->
+                <div class="bg-gray-700 p-4 rounded-md shadow text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                    <div class="text-yellow-400 text-3xl font-bold mb-2">
+                        <span th:text="${stats['characters']}">1</span>
+                    </div>
+                    <h4 class="text-lg font-medium text-white">Characters</h4>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-gray-700 p-4 rounded-md shadow text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                    <div class="text-yellow-400 text-3xl font-bold mb-2">
+                        <span th:text="${stats['accounts']}">2</span>
+                    </div>
+                    <h4 class="text-lg font-medium text-white">Accounts</h4>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-gray-700 p-4 rounded-md shadow text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                    <div class="text-yellow-400 text-3xl font-bold mb-2">
+                        <span th:text="${stats['online']}">3</span>
+                    </div>
+                    <h4 class="text-lg font-medium text-white">Users Online</h4>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- Features Section -->
+<section id="features" class="bg-gray-800 py-16 px-4">
+    <div class="container mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-yellow-400 text-center mb-10">Features</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="bg-gray-900 p-6 rounded-lg shadow-lg text-center">
+                <img src="https://www.hellscreamwow.com/application/themes/hellscream//assets/images/graphics/connect/create-account.webp"
+                     alt="Custom Content" class="mx-auto mb-4 w-20 h-20 rounded-full object-cover">
+                <h3 class="text-xl font-bold text-yellow-400">Custom Content</h3>
+                <p class="text-gray-300">Explore exclusive dungeons, zones, and quests tailored specifically for our players.</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-gray-900 p-6 rounded-lg shadow-lg text-center">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkVZ2j_4KZnZxG7kT8yHuDjrQk-sb_EtHKBE1CqHH5Qlj34uLEpHFVJJvS8Hqwg3In__E&usqp=CAU"
+                     alt="High Stability" class="mx-auto mb-4 w-20 h-20 rounded-full object-cover">
+                <h3 class="text-xl font-bold text-yellow-400">High Server Stability</h3>
+                <p class="text-gray-300">Enjoy a lag-free experience with minimal downtime and robust performance.</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-gray-900 p-6 rounded-lg shadow-lg text-center">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS_2GDIZP9dFjKnyERoxns_Vxa3C1-SXH7Ng&s"
+                     alt="Community Focus" class="mx-auto mb-4 w-20 h-20 rounded-full object-cover">
+                <h3 class="text-xl font-bold text-yellow-400">Community-Driven</h3>
+                <p class="text-gray-300">Join a thriving community with active forums, Discord, and in-game events.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Noticias -->
+
+
+<section>
+    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
+        <h2 class="text-3xl md:text-4xl font-bold text-yellow-400 text-center mb-10">News</h2>
+
+        <!-- Contenedor con scroll y la clase 'no-scrollbar' aplicada -->
+        <div class="max-h-96 overflow-y-auto no-scrollbar">
+            <div th:each="card : ${cards}" class="rounded-lg shadow-lg p-6">
+                <!-- Diseño de la tarjeta con Flex para el texto y la imagen lado a lado -->
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Contenedor de texto (Título y Descripción) -->
+                    <div class="max-w-lg flex-1">
+                        <h2 class="text-2xl font-semibold text-yellow-400 sm:text-3xl" th:text="${card.title}">Card Title</h2>
+                        <p class="mt-4 text-gray-300" th:text="${card.description}">Card Description</p>
+                    </div>
+
+                    <!-- Contenedor de imagen -->
+                    <div class="flex-shrink-0">
+                        <div class="w-80 h-80 md:w-104 md:h-104 overflow-hidden rounded-lg">
+                            <img th:src="${card.img}" class="object-cover w-full h-full" alt="Card Image"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section id="join" class="bg-gray-900 py-16 text-center">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-yellow-400 mb-6">Ready to Join the Battle?</h2>
+        <p class="text-lg text-gray-300 mb-6">Create your account, download the client, and dive into the world of Azeroth today!</p>
+        <a href="/register" class="bg-yellow-400 text-gray-900 px-8 py-3 rounded-lg shadow-lg hover:bg-yellow-500">
+            Create an Account
+        </a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-300 py-8">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center">
+            <!-- Social Media Links -->
+            <div class="flex space-x-6">
+                <a class="text-gray-400 hover:text-yellow-400 transition-colors" href="#">
+                    <i class="fab fa-facebook-f text-2xl"></i>
+                </a>
+                <a class="text-gray-400 hover:text-yellow-400 transition-colors" href="#">
+                    <i class="fab fa-twitter text-2xl"></i>
+                </a>
+                <a class="text-gray-400 hover:text-yellow-400 transition-colors" href="#">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+                <a class="text-gray-400 hover:text-yellow-400 transition-colors" href="#">
+                    <i class="fab fa-discord text-2xl"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer Links or Copyright -->
+        <div class="mt-6 text-center text-sm text-gray-400">
+            <p>&copy; 2024 WoW Private Server. All rights reserved.</p>
+            <p class="mt-2">Crafted with ❤️ by the WoW Libre</p>
+        </div>
+    </div>
+</footer>
+
+
+</body>
+</html>

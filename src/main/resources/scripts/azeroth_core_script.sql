@@ -1,17 +1,13 @@
-ALTER TABLE auth.account
+ALTER TABLE acore_auth.account
     ADD COLUMN user_id bigint;
 
-ALTER TABLE characters.guild
-    ADD COLUMN public_access boolean;
-
-ALTER TABLE characters.guild
-    ADD COLUMN discord text;
-
-ALTER TABLE characters.guild
+ALTER TABLE acore_characters.guild
+    ADD COLUMN public_access boolean,
+    ADD COLUMN discord text,
     ADD COLUMN multi_faction boolean;
 
 
-CREATE TABLE auth.client
+CREATE TABLE acore_auth.client
 (
     id              bigint AUTO_INCREMENT NOT NULL,
     username        varchar(50)           NOT NULL,
@@ -27,7 +23,7 @@ CREATE TABLE auth.client
 
 
 
-CREATE TABLE characters.character_transaction
+CREATE TABLE acore_characters.character_transaction
 (
     id               bigint auto_increment NOT NULL,
     character_id     bigint                NOT NULL,

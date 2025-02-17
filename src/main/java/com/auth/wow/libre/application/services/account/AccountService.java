@@ -6,8 +6,10 @@ import com.auth.wow.libre.domain.model.dto.*;
 import com.auth.wow.libre.domain.model.exception.*;
 import com.auth.wow.libre.domain.ports.in.account.*;
 import com.auth.wow.libre.domain.ports.in.account_banned.*;
+import com.auth.wow.libre.domain.ports.in.google.*;
 import com.auth.wow.libre.domain.ports.in.wow_libre.*;
 import com.auth.wow.libre.domain.ports.out.account.*;
+import com.auth.wow.libre.infrastructure.client.dto.*;
 import com.auth.wow.libre.infrastructure.entities.auth.*;
 import com.auth.wow.libre.infrastructure.repositories.auth.account.*;
 import com.auth.wow.libre.infrastructure.util.*;
@@ -25,15 +27,17 @@ public class AccountService implements AccountPort {
     private final SaveAccountPort saveAccountPort;
     private final AccountBannedPort accountBannedPort;
     private final WowLibrePort wowLibrePort;
+    private final GooglePort googlePort;
 
     public AccountService(ObtainAccountPort obtainAccountPort,
                           SaveAccountPort saveAccountPort,
                           AccountBannedPort accountBannedPort,
-                          WowLibrePort wowLibrePort) {
+                          WowLibrePort wowLibrePort, GooglePort googlePort) {
         this.obtainAccountPort = obtainAccountPort;
         this.saveAccountPort = saveAccountPort;
         this.accountBannedPort = accountBannedPort;
         this.wowLibrePort = wowLibrePort;
+        this.googlePort = googlePort;
     }
 
     @Override
@@ -81,6 +85,48 @@ public class AccountService implements AccountPort {
                     transactionId, e.getMessage());
             throw new InternalException(
                     "It was not possible to create the client, please try later and contact support", transactionId);
+        }
+
+
+    }
+
+    @Override
+    public void createLocal(String username, String password, String email, String recaptchaToken,
+                            String ipAddress) {
+        String transactionId = "";
+
+        if (!googlePort.verifyRecaptcha(new VerifyCaptchaRequest(
+                recaptchaToken, ipAddress)).getSuccess()) {
+            LOGGER.error("The captcha is invalid");
+            throw new InternalException("The captcha is invalid", transactionId);
+        }
+
+        final boolean usernameExist = obtainAccountPort.findByUsername(username).isPresent();
+
+        if (usernameExist) {
+            LOGGER.error("The username is not available {}", transactionId);
+            throw new InternalException("The username is not available", transactionId);
+        }
+        try {
+            byte[] salt = new byte[32];
+            SecureRandom random = new SecureRandom();
+            random.nextBytes(salt);
+
+            byte[] verifier = EncryptionService.computeVerifier(ParamsEncrypt.trinitycore, salt, username.toUpperCase(),
+                    password.toUpperCase());
+
+            AccountEntity account = new AccountEntity();
+            account.setSalt(salt);
+            account.setVerifier(verifier);
+            account.setLocked(false);
+            account.setUsername(username);
+            account.setEmail(email);
+            account.setExpansion("2");
+            account.setUserId(null);
+            saveAccountPort.save(account);
+        } catch (Exception e) {
+            throw new InternalException("It was not possible to create the user, an unexpected error occurred",
+                    transactionId);
         }
 
 
