@@ -16,12 +16,12 @@ public class AccountEntity implements Serializable {
     private Long id;
     @Column(name = "username", unique = true)
     private String username;
-    @Column(name = "salt")
-    private byte[] salt;
-    @Column(name = "verifier")
-    private byte[] verifier;
-    @Column(name = "totp_secret")
-    private String otpSecret;
+    @Column(name = "sha_pass_hash")
+    private String sha;
+    @Column(name = "s")
+    private String salt;
+    @Column(name = "v")
+    private String verifier;
     @Column(name = "email")
     private String email;
     @Column(name = "joindate")

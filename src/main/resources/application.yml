@@ -15,19 +15,19 @@ spring:
       on-profile: local
   datasource:
     primary:
-      url: jdbc:mysql://localhost:3306/acore_auth
+      url: jdbc:mysql://localhost:3306/mop_auth
       username: root
-      password: Loquendo96@
+      password: ascent
       driver-class-name: com.mysql.cj.jdbc.Driver
     secondary:
-      url: jdbc:mysql://localhost:3306/acore_characters
+      url: jdbc:mysql://localhost:3306/mop_characters
       username: root
-      password: Loquendo96@
+      password: ascent
       driver-class-name: com.mysql.cj.jdbc.Driver
     three:
-      url: jdbc:mysql://localhost:3306/acore_world
+      url: jdbc:mysql://localhost:3306/mop_world
       username: root
-      password: Loquendo96@
+      password: ascent
       driver-class-name: com.mysql.cj.jdbc.Driver
 server:
   address: 0.0.0.0

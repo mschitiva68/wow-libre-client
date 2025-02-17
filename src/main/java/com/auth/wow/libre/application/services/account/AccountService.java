@@ -68,8 +68,7 @@ public class AccountService implements AccountPort {
                     decryptedPassword.toUpperCase());
 
             AccountEntity account = new AccountEntity();
-            account.setSalt(salt);
-            account.setVerifier(verifier);
+
             account.setLocked(false);
             account.setUsername(username);
             account.setEmail(email);
@@ -107,6 +106,25 @@ public class AccountService implements AccountPort {
             LOGGER.error("The username is not available {}", transactionId);
             throw new InternalException("The username is not available", transactionId);
         }
+        String input = username.toUpperCase() + ":" + password.toUpperCase();
+        String sha1Hex = "";
+        try {
+            // Crear un objeto MessageDigest con el algoritmo SHA-1
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
+
+            // Calcular el hash
+            byte[] hashBytes = digest.digest(input.getBytes());
+
+            // Convertir el hash a formato hexadecimal y pasarlo a mayúsculas
+             sha1Hex = byteArrayToHex(hashBytes).toUpperCase();
+
+            // Imprimir el resultado
+            System.out.println("SHA1: " + sha1Hex);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
         try {
             byte[] salt = new byte[32];
             SecureRandom random = new SecureRandom();
@@ -114,14 +132,17 @@ public class AccountService implements AccountPort {
 
             byte[] verifier = EncryptionService.computeVerifier(ParamsEncrypt.trinitycore, salt, username.toUpperCase(),
                     password.toUpperCase());
+            String verifierBase64 = Base64.getEncoder().encodeToString(verifier);
+            String saltBase64 = Base64.getEncoder().encodeToString(salt);
 
             AccountEntity account = new AccountEntity();
-            account.setSalt(salt);
-            account.setVerifier(verifier);
+            account.setSha(sha1Hex);
+            account.setSalt(saltBase64);
+            account.setVerifier(verifierBase64);
             account.setLocked(false);
             account.setUsername(username);
             account.setEmail(email);
-            account.setExpansion("2");
+            account.setExpansion("3");
             account.setUserId(null);
             saveAccountPort.save(account);
         } catch (Exception e) {
@@ -131,7 +152,14 @@ public class AccountService implements AccountPort {
 
 
     }
-
+    public static String byteArrayToHex(byte[] byteArray) {
+        try (Formatter formatter = new Formatter()) {
+            for (byte b : byteArray) {
+                formatter.format("%02x", b);
+            }
+            return formatter.toString();
+        }
+    }
     @Override
     public Long countOnline(String transactionId) {
         return obtainAccountPort.countOnline(transactionId);
@@ -181,14 +209,13 @@ public class AccountService implements AccountPort {
             random.nextBytes(salt);
 
             AccountEntity accountUpdate = account.get();
-            accountUpdate.setSalt(salt);
+
 
             byte[] verifier = EncryptionService.computeVerifier(ParamsEncrypt.trinitycore, salt,
                     accountUpdate.getUsername().toUpperCase(),
                     decryptedPassword.toUpperCase());
 
 
-            accountUpdate.setVerifier(verifier);
 
             saveAccountPort.save(accountUpdate);
         } catch (Exception e) {

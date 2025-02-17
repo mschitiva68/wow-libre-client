@@ -28,7 +28,7 @@ public class Transactions {
         this.executeCommandsPort = executeCommandsPort;
     }
 
-    @Scheduled(cron = " */40 * * * * *")
+    @Scheduled(cron = " 1 */40  * * * *")
     @Transactional
     public void sendCreditLoans() {
         String transactionId = "";

@@ -26,7 +26,7 @@ public class Events {
         this.executeCommandsPort = executeCommandsPort;
     }
 
-    @Scheduled(cron = "0 */10 * * * *")
+    @Scheduled(cron = "0 */40 * * * *")
     public void eventTwinks() {
 
         if (configurations.isEventTwink()) {

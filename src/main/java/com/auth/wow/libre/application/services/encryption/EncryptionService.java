@@ -45,7 +45,28 @@ public class EncryptionService {
 
         return littleEndianVerifierBytes;
     }
+    public static BigInteger computeVerifier2(ParamsEncrypt params, byte[] salt, String username, String password) throws Exception {
+        // Verificar la longitud de identidad y contraseña
+        if (username.length() > params.identityMaxLength) {
+            throw new IllegalArgumentException("La identidad debe tener un máximo de " + params.identityMaxLength +
+                    " caracteres");
+        }
+        if (password.length() > params.passwordMaxLength) {
+            throw new IllegalArgumentException("La contraseña debe tener un máximo de " + params.passwordMaxLength +
+                    " caracteres");
+        }
 
+        // Calcular x
+        BigInteger x = getX(params, salt, username, password);
+        // Calcular el verificador
+        BigInteger g = params.g;
+        BigInteger N = params.N;
+        BigInteger verifier = modPow(g, x, N);
+        // Convertir a little endian
+
+
+        return verifier;
+    }
     /**
      * Calcula el valor intermedio x.
      *
