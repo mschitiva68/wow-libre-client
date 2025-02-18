@@ -3,7 +3,7 @@ ALTER TABLE acore_auth.account
 
 ALTER TABLE acore_characters.guild
     ADD COLUMN public_access boolean,
-    ADD COLUMN discord text,
+    ADD COLUMN discord       text,
     ADD COLUMN multi_faction boolean;
 
 
@@ -42,3 +42,10 @@ CREATE TABLE acore_characters.character_transaction
     CONSTRAINT character_transaction_reference_uq UNIQUE (reference)
 );
 
+CREATE TABLE acore_auth.server_publications
+(
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    img         text NOT NULL,
+    title       VARCHAR(80)  NOT NULL,
+    description TEXT         NOT NULL
+);
